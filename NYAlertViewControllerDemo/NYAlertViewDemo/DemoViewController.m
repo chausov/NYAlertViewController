@@ -55,11 +55,12 @@ static NSString * const kTableViewCellReuseIdentifier = @"kTableViewCellReuseIde
 }
 
 - (void)showCustomAlertViewWithActionCount:(NSInteger)actionCount {
+    
     NYAlertViewController *alertViewController = [[NYAlertViewController alloc] initWithNibName:nil bundle:nil];
     alertViewController.title = NSLocalizedString(@"Example Title", nil);
     alertViewController.message = NSLocalizedString(@"Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec id elit non mi porta gravida at eget metus.", nil);
     
-    alertViewController.view.tintColor = self.view.tintColor;
+    alertViewController.view.tintColor = [UIColor greenColor];
     
     alertViewController.backgroundTapDismissalGestureEnabled = YES;
     alertViewController.swipeDismissalGestureEnabled = YES;
@@ -163,6 +164,8 @@ static NSString * const kTableViewCellReuseIdentifier = @"kTableViewCellReuseIde
     alertViewController.title = NSLocalizedString(@"Long Message", nil);
     alertViewController.message = NSLocalizedString(@"Nullam id dolor id nibh ultricies vehicula ut id elit. Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum. Donec id elit non mi porta gravida at eget metus. Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula ut id elit. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Donec id elit non mi porta gravida at eget metus. Etiam porta sem malesuada magna mollis euismod. Curabitur blandit tempus porttitor. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Nullam quis risus eget urna mollis ornare vel eu leo. Etiam porta sem malesuada magna mollis euismod. Maecenas faucibus mollis interdum. Maecenas sed diam eget risus varius blandit sit amet non magna.", nil);
     
+    alertViewController.alertViewBackgroundColor = [UIColor blueColor];
+    
     [alertViewController addAction:[NYAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
                                                             style:UIAlertActionStyleCancel
                                                           handler:^(NYAlertAction *action) {
@@ -178,25 +181,25 @@ static NSString * const kTableViewCellReuseIdentifier = @"kTableViewCellReuseIde
     alertViewController.backgroundTapDismissalGestureEnabled = YES;
     alertViewController.swipeDismissalGestureEnabled = YES;
     
-    alertViewController.title = NSLocalizedString(@"Custom UI", nil);
-    alertViewController.message = NSLocalizedString(@"Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Donec id elit non mi porta gravida at eget metus.", nil);
+    alertViewController.title = NSLocalizedString(@"Lorem ipsum", nil);
+    alertViewController.message = NSLocalizedString(@"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae urna eu est lobortis luctus.\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae urna eu est lobortis luctus.", nil);
     
-    alertViewController.buttonCornerRadius = 20.0f;
+    alertViewController.buttonCornerRadius = 0.0f;
     alertViewController.view.tintColor = self.view.tintColor;
     
-    alertViewController.titleFont = [UIFont fontWithName:@"AvenirNext-Bold" size:18.0f];
-    alertViewController.messageFont = [UIFont fontWithName:@"AvenirNext-Medium" size:16.0f];
-    alertViewController.buttonTitleFont = [UIFont fontWithName:@"AvenirNext-Regular" size:alertViewController.buttonTitleFont.pointSize];
-    alertViewController.cancelButtonTitleFont = [UIFont fontWithName:@"AvenirNext-Medium" size:alertViewController.cancelButtonTitleFont.pointSize];
+    alertViewController.titleFont = [UIFont fontWithName:@"Arial" size:20.0f];
+    alertViewController.messageFont = [UIFont fontWithName:@"Arial" size:15.0f];
+    alertViewController.buttonTitleFont = [UIFont fontWithName:@"Arial" size:alertViewController.buttonTitleFont.pointSize];
+    alertViewController.cancelButtonTitleFont = [UIFont fontWithName:@"Arial" size:alertViewController.cancelButtonTitleFont.pointSize];
     
-    alertViewController.alertViewBackgroundColor = [UIColor colorWithWhite:0.19f alpha:1.0f];
-    alertViewController.alertViewCornerRadius = 10.0f;
+    alertViewController.alertViewBackgroundColor = [UIColor whiteColor];
+    alertViewController.alertViewCornerRadius = 0.0f;
     
-    alertViewController.titleColor = [UIColor colorWithRed:0.42f green:0.78 blue:0.32f alpha:1.0f];
-    alertViewController.messageColor = [UIColor colorWithWhite:0.92f alpha:1.0f];
+    alertViewController.titleColor = [UIColor redColor];
+    alertViewController.messageColor = [UIColor blackColor];
     
-    alertViewController.buttonColor = [UIColor colorWithRed:0.42f green:0.78 blue:0.32f alpha:1.0f];
-    alertViewController.buttonTitleColor = [UIColor colorWithWhite:0.19f alpha:1.0f];
+    alertViewController.buttonColor = [UIColor whiteColor];
+    alertViewController.buttonTitleColor = [UIColor blackColor];
     
     alertViewController.cancelButtonColor = [UIColor colorWithRed:0.42f green:0.78 blue:0.32f alpha:1.0f];
     alertViewController.cancelButtonTitleColor = [UIColor colorWithWhite:0.19f alpha:1.0f];
@@ -207,11 +210,116 @@ static NSString * const kTableViewCellReuseIdentifier = @"kTableViewCellReuseIde
                                                               [self dismissViewControllerAnimated:YES completion:nil];
                                                           }]];
     
+    
+    [self presentViewController:alertViewController animated:YES completion:nil];
+}
+
+- (void)showTextFieldAlertView {
+    
+    NYAlertViewController *alertViewController = [[NYAlertViewController alloc] initWithNibName:nil bundle:nil];
+    
+    alertViewController.backgroundTapDismissalGestureEnabled = YES;
+    alertViewController.swipeDismissalGestureEnabled = YES;
+    
+    alertViewController.title = NSLocalizedString(@"Lorem ipsum", nil);
+    //    alertViewController.message = NSLocalizedString(@"You will receive a cashout email reciept immediately. Payments take up to 24 hours.\n\nIf you need to make changes to your paypal address, please email cashout@beomni.com", nil);
+    
+    NSMutableAttributedString *msgString = [[NSMutableAttributedString alloc] init];
+    
+    NSString *regularPart = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae urna eu est lobortis luctus.\n\n";
+    
+    NSDictionary *textGrayTitleAttribs = @{
+                                           NSFontAttributeName: [UIFont systemFontOfSize:15.0],
+                                           NSForegroundColorAttributeName: [UIColor blackColor]
+                                           };
+    
+    NSDictionary *textBoldTitleAttribs = @{
+                                           NSFontAttributeName :[UIFont italicSystemFontOfSize:15.0],
+                                           NSForegroundColorAttributeName: [UIColor blackColor]
+                                           };
+    
+    
+    [msgString appendAttributedString:[[NSAttributedString alloc] initWithString:regularPart
+                                                                      attributes:textGrayTitleAttribs]];
+    
+    
+    
+    NSString *string = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vitae urna eu est lobortis luctus. ";
+    
+    [msgString appendAttributedString:[[NSAttributedString alloc] initWithString:string
+                                                                      attributes:textBoldTitleAttribs]];
+    
+    
+    
+    
+    alertViewController.attributedMessage = msgString;
+    
+    
+    alertViewController.buttonCornerRadius = 0.0f;
+    alertViewController.view.tintColor = self.view.tintColor;
+    
+    alertViewController.titleFont = [UIFont fontWithName:@"Arial" size:20.0f];
+    //    alertViewController.messageFont = [UIFont fontWithName:@"Arial" size:15.0f];
+    alertViewController.buttonTitleFont = [UIFont fontWithName:@"Arial" size:alertViewController.buttonTitleFont.pointSize];
+    alertViewController.cancelButtonTitleFont = [UIFont fontWithName:@"Arial" size:alertViewController.cancelButtonTitleFont.pointSize];
+    
+    alertViewController.alertViewBackgroundColor = [UIColor colorWithRed:230.0/255.0 green:232.0/255.0 blue:233.0/255.0 alpha:1.0];
+    alertViewController.alertViewCornerRadius = 0.0f;
+    
+    alertViewController.titleColor = [UIColor blackColor];
+    //    alertViewController.messageColor = [UIColor blackColor];
+    
+    alertViewController.buttonColor = [UIColor whiteColor];
+    alertViewController.buttonTitleColor = [UIColor blackColor];
+    
+    alertViewController.cancelButtonColor = [UIColor colorWithRed:0.42f green:0.78 blue:0.32f alpha:1.0f];
+    alertViewController.cancelButtonTitleColor = [UIColor colorWithWhite:0.19f alpha:1.0f];
+    
+    
+    
+    UIView *contentView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    UITextField *_textField = [[UITextField alloc] initWithFrame:CGRectZero];
+    [_textField setTranslatesAutoresizingMaskIntoConstraints:NO];
+    _textField.borderStyle = UITextBorderStyleNone;
+    _textField.textAlignment = NSTextAlignmentCenter;
+    _textField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _textField.spellCheckingType = UITextSpellCheckingTypeNo;
+    _textField.backgroundColor = [UIColor whiteColor];
+    _textField.keyboardType = UIKeyboardTypeEmailAddress;
+    _textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _textField.placeholder = @"Lorem ipsum";
+    
+    _textField.layer.borderColor = [UIColor colorWithRed:152.0/255.0 green:164.0/255.0 blue:174.0/255.0 alpha:1.0].CGColor;
+    _textField.layer.borderWidth = 1.0;
+    
+    [contentView addSubview:_textField];
+    
+    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[_textField(40)]-|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:NSDictionaryOfVariableBindings(_textField)]];
+    
+    [contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-26-[_textField]-26-|"
+                                                                        options:0
+                                                                        metrics:nil
+                                                                          views:NSDictionaryOfVariableBindings(_textField)]];
+    
+    alertViewController.alertViewContentView = contentView;
+    
+    
     [alertViewController addAction:[NYAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                            style:UIAlertActionStyleCancel
+                                                            style:UIAlertActionStyleDefault
                                                           handler:^(NYAlertAction *action) {
                                                               [self dismissViewControllerAnimated:YES completion:nil];
                                                           }]];
+    
+    [alertViewController addAction:[NYAlertAction actionWithTitle:NSLocalizedString(@"Continue", nil)
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(NYAlertAction *action) {
+                                                              [self dismissViewControllerAnimated:YES completion:nil];
+                                                          }]];
+    
     
     [self presentViewController:alertViewController animated:YES completion:nil];
 }
@@ -250,6 +358,10 @@ static NSString * const kTableViewCellReuseIdentifier = @"kTableViewCellReuseIde
             
         case 7:
             [self showCustomUIAlertView];
+            break;
+            
+        case 8:
+            [self showTextFieldAlertView];
             break;
     }
     
