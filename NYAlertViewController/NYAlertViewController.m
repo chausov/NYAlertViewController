@@ -27,7 +27,7 @@
 
 @end
 
-static CGFloat const kDefaultPresentationAnimationDuration = 0.7f;
+static CGFloat const kDefaultPresentationAnimationDuration = 0.5f;
 
 @implementation NYAlertViewPresentationAnimationController
 
@@ -150,7 +150,7 @@ static CGFloat const kDefaultDismissalAnimationDuration = 0.6f;
     self.backgroundDimmingView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.backgroundDimmingView setTranslatesAutoresizingMaskIntoConstraints:NO];
     self.backgroundDimmingView.alpha = 0.0f;
-    self.backgroundDimmingView.backgroundColor = [UIColor blackColor];
+    self.backgroundDimmingView.backgroundColor = [UIColor colorWithRed:46.0/255.0 green:50.0/255.0 blue:54.0/255.0 alpha:1.0];
     [self.containerView addSubview:self.backgroundDimmingView];
     
     [self.containerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_backgroundDimmingView]|"
@@ -169,7 +169,7 @@ static CGFloat const kDefaultDismissalAnimationDuration = 0.6f;
     // Shrink the presenting view controller, and animate in the dark background view
     id <UIViewControllerTransitionCoordinator> transitionCoordinator = [self.presentingViewController transitionCoordinator];
     [transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        self.backgroundDimmingView.alpha = 0.7f;
+        self.backgroundDimmingView.alpha = 0.3f;
     }
                                            completion:nil];
 }
@@ -320,6 +320,8 @@ static CGFloat const kDefaultDismissalAnimationDuration = 0.6f;
 - (void)panGestureRecognized:(UIPanGestureRecognizer *)gestureRecognizer {
     self.view.backgroundViewVerticalCenteringConstraint.constant = [gestureRecognizer translationInView:self.view].y;
     
+    NSLog(@"%f", self.view.backgroundViewVerticalCenteringConstraint.constant);
+    
     NYAlertViewPresentationController *presentationController = (NYAlertViewPresentationController* )self.presentationController;
     
     CGFloat windowHeight = CGRectGetHeight([UIApplication sharedApplication].keyWindow.bounds);
@@ -373,6 +375,28 @@ static CGFloat const kDefaultDismissalAnimationDuration = 0.6f;
     [super viewWillAppear:animated];
     
     self.view.actions = self.actions;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)setAlertViewBackgroundColor:(UIColor *)alertViewBackgroundColor {
@@ -381,12 +405,35 @@ static CGFloat const kDefaultDismissalAnimationDuration = 0.6f;
     self.view.alertBackgroundView.backgroundColor = alertViewBackgroundColor;
 }
 
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    NSLog(@"%f", kbSize.height);
+    
+    CGFloat viewHeight = self.view.frame.size.height;
+    
+    CGFloat centeOffset = viewHeight - (viewHeight/2.0 + (viewHeight-kbSize.height)/2.0);
+    
+    self.view.backgroundViewVerticalCenteringConstraint.constant -= centeOffset;
+}
+
+- (void)keyboardWillHide:(NSNotification *)aNotification {
+    self.view.backgroundViewVerticalCenteringConstraint.constant = 0.0f;
+}
+
 #pragma mark - Getters/Setters
 
 - (void)setTitle:(NSString *)title {
     [super setTitle:title];
     
     self.view.titleLabel.text = title;
+}
+
+- (void)setAttributedMessage:(NSAttributedString *)attributedText {
+    _attributedMessage = attributedText;
+    self.view.messageTextView.attributedText = attributedText;
 }
 
 - (void)setMessage:(NSString *)message {

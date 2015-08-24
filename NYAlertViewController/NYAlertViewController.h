@@ -29,6 +29,8 @@
  */
 @property (nonatomic) NSString *message;
 
+@property (nonatomic) NSAttributedString *attributedMessage;
+
 /**
  A Boolean value that determines whether the status bar is visible when the alert view is presented
  
